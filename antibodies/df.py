@@ -31,7 +31,7 @@ def get_freq_df(db, collections, value, chain='heavy'):
         return
     
     if type(collections) == list:
-        continue
+        collections = collections
     else:
         collections = [collections, ]
     
