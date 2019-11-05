@@ -19,7 +19,7 @@ import pymongo
 from natsort import natsorted
 
 
-def get_freq_df(db, collections, value, chain='heavy'):
+def get_freq_df(db, collections, value, chain='heavy', match=None, normalize = False):
 
     # database
     if type(db) == pymongo.database.Database:
@@ -35,7 +35,8 @@ def get_freq_df(db, collections, value, chain='heavy'):
     else:
         collections = [collections, ]
     
-    match = {'chain': chain, 'prod': 'yes'}
+    if not match:
+        match = {'chain': chain, 'prod': 'yes'}
     group = {'_id': '${}'.format(value), 'count': {'$sum': 1}}
 
     # initialize a dictionary that will hold all of the DataFrames we're making (one per subject)
@@ -44,7 +45,7 @@ def get_freq_df(db, collections, value, chain='heavy'):
         
     # iterate through each of the collections in the subject group
     for collection in collections:
-        print(collection)
+        #print(collection)
         data[collection] = {}
 
         # get the aggregation data from MongoDB
@@ -54,12 +55,13 @@ def get_freq_df(db, collections, value, chain='heavy'):
         for r in res:
             data[collection][r['_id']] = r['count']
 
-    print('')
+    #print('')
 
     # construct a DataFrame from the dictionary of V-gene counts
-    df = pd.DataFrame(data).fillna(0)
+    df = pd.DataFrame(data)
+    
+    if normalize:
+        df = df / df.sum()
+        df = df.dropna(0)
 
     return df
-
-
-    
