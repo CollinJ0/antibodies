@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='antibodies',
-    version='0',
+    version='1',
     #packages=['antibodies',],
     description='Helpful Scripts for Antibody NGS Data Processing',
     author="CollinJ0",
