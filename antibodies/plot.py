@@ -34,7 +34,7 @@ def df_freq_barplot(df, cols=None):
     sns.barplot(data = df, x='index', y='value', hue='variable')
     
     
-def QuickDataCheck(db, collections=None, index=False, values=None):
+def QuickDataCheck(db, collections=None, index=False, values=None, match=None):
     # This function will quickly allow you to check the sequencing data of a database
     # database
     if type(db) == pymongo.database.Database:
@@ -63,12 +63,12 @@ def QuickDataCheck(db, collections=None, index=False, values=None):
     #if there is a set values, then use those
     if values:
         print('Getting data...')
-        dfs = [get_freq_df(DB, colls, value, normalize=True) for value in values]
+        dfs = [get_freq_df(DB, colls, value, normalize=True, match=match) for value in values]
 
     else:
         print('Getting data...')
         values = ['v_gene.gene', 'cdr3_len']
-        dfs = [get_freq_df(DB, colls, value, normalize=True) for value in values]
+        dfs = [get_freq_df(DB, colls, value, normalize=True, match=match) for value in values]
     
     #now plot the figures for each value
     for df, value in zip(dfs, values):
