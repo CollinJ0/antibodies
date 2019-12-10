@@ -33,7 +33,6 @@ import sys
 
 from pymongo import MongoClient
 
-from . import log
 
 if sys.version_info[0] > 2:
     STR_TYPES = [str, ]
